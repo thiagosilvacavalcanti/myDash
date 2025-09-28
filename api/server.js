@@ -9,7 +9,29 @@ const app = express();
 app.use(express.json());
 
 // Permitir o frontend local (porta do Vite geralmente 5173)
-app.use(cors({ origin: ["http://localhost:5173"], credentials: false }));
+// ❌ remova/ Substitua isto:
+// app.use(cors({ origin: ["http://localhost:5173"], credentials: false }));
+
+// ✅ coloque isto logo depois de `app.use(express.json())`, antes das rotas:
+const allowedOrigins = [
+  ...(process.env.FRONTEND_ORIGIN ? process.env.FRONTEND_ORIGIN.split(",").map(s => s.trim()) : []),
+  "http://localhost:5173",
+];
+
+// CORS dinâmico: permite localhost e o(s) domínio(s) do front vindos do .env
+app.use(
+  cors({
+    origin(origin, cb) {
+      // sem Origin (curl/Postman) → libera
+      if (!origin) return cb(null, true);
+      // confere lista
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+      return cb(new Error("Not allowed by CORS: " + origin));
+    },
+    credentials: false,
+  })
+);
+
 
 const api = axios.create({
   baseURL: process.env.BASE_URL,
