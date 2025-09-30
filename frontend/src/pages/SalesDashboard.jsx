@@ -32,7 +32,7 @@ const LOJAS = [
 const brl = (v) =>
   (v ?? 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-const fmt = (d) => new Date(d).toLocaleDateString("pt-BR");
+const fmt = (d) => new Date(`${d}T00:00:00`).toLocaleDateString("pt-BR");
 
 const yyyy_mm_01_end = (yyyyMm) => {
   // yyyyMm ex: "2025-09"

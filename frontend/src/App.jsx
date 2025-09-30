@@ -1,13 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import SalesDashboard from "./pages/SalesDashboard";
+import { Routes, Route } from "react-router-dom";
+import MetasPorVendedor from "./pages/MetasPorVendedor";
+import SalesDashboard from "./pages/SalesDashboard"; // se existir
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return <SalesDashboard />; 
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/adm/*" element={<SalesDashboard />} />
+      <Route path="/painel/metas" element={<MetasPorVendedor />} />
+      {/* rota default opcional */}
+      <Route path="*" element={<MetasPorVendedor />} />
+    </Routes>
+  );
 }
-
-export default App
